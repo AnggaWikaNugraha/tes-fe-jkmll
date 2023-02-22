@@ -1,7 +1,7 @@
 import React from "react";
 
 const DashboardScreen = React.lazy(() => { return new Promise((resolve : any)  => {
-    setTimeout(() => resolve(import("../modules/dashboard")), 2000);
+    setTimeout(() => resolve(import("../modules/delivery")), 2000);
   });
 });
 const LoginScreen = React.lazy(() => { return new Promise((resolve : any)  => {
