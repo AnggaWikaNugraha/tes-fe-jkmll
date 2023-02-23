@@ -28,18 +28,18 @@ const FinishStyled = styled.div`
   }
 `;
 
-const Finish: React.FC = () => {
+const Finish = ({ setSteps, steps}: any) => {
   return (
     <FinishStyled>
       <section className="finish">
-        {/* <div className="wrap-finish"> */}
+        <div className="wrap-finish">
         <HeadingStyled as="h2" marginY="1rem" size="36px">
           Thank you
         </HeadingStyled>
         <p className="order-id">Order ID : XXKYB</p>
         <p>Your order will be delivered today with GO-SEND</p>
         <Back marginY="4rem" />
-        {/* </div> */}
+        </div>
       </section>
       <section className="summary">
         <Summary button="" />

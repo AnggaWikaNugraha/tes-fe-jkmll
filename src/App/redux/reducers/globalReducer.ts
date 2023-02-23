@@ -43,3 +43,35 @@ export function StatusPageReducer(state = StatusPageState, action: IAction) {
       return state;
   }
 }
+
+const x = JSON.parse(localStorage.getItem('persist:root') || '{}') ;
+const viewState: any= x.StatusViewReducer ? JSON.parse(x.StatusViewReducer) : {
+  view: 1
+};
+
+export function StatusViewReducer(state = viewState, action: any) {
+  switch (action.type) {
+    case Type.SET_VIEW_DELIVERY:
+      return {
+        ...state,
+        view: 1
+      }
+    case Type.SET_VIEW_PAYMENT:
+      return {
+        ...state,
+        view: 2
+      }
+    case Type.SET_VIEW_FINISH:
+      return {
+        ...state,
+        view: 3
+      }
+    case Type.SET_VIEW:
+      return {
+        ...state,
+        view: action.view
+      }
+    default:
+      return state;
+  }
+}

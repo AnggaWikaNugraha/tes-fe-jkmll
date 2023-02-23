@@ -110,7 +110,7 @@ export const DeliveryStyled = styled.div`
     }
   }
   .default {
-    border: 1px solid #646464;
+    border: 1px solid #CCCCCC;
   }
   .text-danger {
     font-size: 16px;

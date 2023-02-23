@@ -1,5 +1,6 @@
-import { StatusPageReducer } from '../redux/reducers/globalReducer';
+import { StatusPageReducer, StatusViewReducer } from '../redux/reducers/globalReducer';
 
 export default {
   StatusPageReducer,
+  StatusViewReducer,
 };

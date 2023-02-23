@@ -1,5 +1,5 @@
 const WHITE_LIST : any = [
-  
+  'StatusViewReducer'
 ];
 
 export default {

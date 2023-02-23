@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from "styled-components";
 import Step from '../../components/step';
 import Delivery from '../delivery';
@@ -39,9 +40,10 @@ const ContainerStyled = styled.div`
 
 function LayoutApp({children}: any) {
 
-  const [view, setView] = React.useState(1);
-
-  const [steps, setSteps] = React.useState([
+  const viewReducer = useSelector((state: any) => state.StatusViewReducer)
+  const x = JSON.parse(localStorage.getItem('setSteps') || '[]') ;
+  console.log(x)
+  let y = x ? x : [
     {
       number: 1,
       title: 'Delivery',
@@ -60,28 +62,27 @@ function LayoutApp({children}: any) {
       isActive: false,
       path: '/finsh'
     }
-  ])
-
-  console.log(steps)
+  ]
+  const [steps, setSteps] = React.useState(y)
 
   return (
     <LayoutStyled>
        <div className="wrap-step">
         {
-          steps.map((res) => <>
-            <Step setView={setView} steps={steps} path={res.path} setSteps={setSteps} isActive={res.isActive} number={res.number} title={res.title}/>
+          steps.map((res: any) => <>
+            <Step steps={steps} path={res.path} setSteps={setSteps} isActive={res.isActive} number={res.number} title={res.title}/>
           </>)
         }
         </div>
         <ContainerStyled>
           {
-            view === 1 && <Delivery/>
+            viewReducer.view === 1 && <Delivery setSteps={setSteps} steps={steps}/>
           }
           {
-            view === 2 && <Payment/>
+            viewReducer.view === 2 && <Payment setSteps={setSteps} steps={steps}/>
           }
           {
-            view === 3 && <Finish/>
+            viewReducer.view === 3 && <Finish setSteps={setSteps} steps={steps}/>
           }
           {children}
         </ContainerStyled>

@@ -6,7 +6,7 @@ import Back from "../../components/Back";
 import Card from "../../components/card";
 import HeadingStyled from "../../components/Heading";
 import Summary from "../../components/summary";
-// import { SummaryContext } from "../context/SummaryContext";
+import { SummaryContext } from "../../context/summaryContext";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 
@@ -65,9 +65,16 @@ const wallets = [
     name: "Virtual Account",
   },
 ];
-const Payment: React.FC = () => {
-  // const { setShipment, shipment, paymentMethod, setPaymentMethod } = React.useContext(SummaryContext);
-
+const Payment = ({ setSteps, steps}: any) => {
+  const y = JSON.parse(localStorage.getItem('setChecked') || '{}') ;
+  const { setShipment, setFeeDropship, shipment, paymentMethod, setPaymentMethod } = React.useContext(SummaryContext);
+  const addFeeDropship = () => {
+    if (y) setFeeDropship(5900);
+    if (!y) setFeeDropship(0);
+  };
+  React.useEffect(() => {
+    addFeeDropship();
+  }, [y]);
   const history = useHistory();
   const onSubmit = () => {
     // if (shipment.cost && paymentMethod !== "Payment") {
@@ -87,13 +94,13 @@ const Payment: React.FC = () => {
               key={listshipment.id}
               cost={listshipment.cost}
               name={listshipment.name}
-              // onClick={() =>
-              //   setShipment({
-              //     name: listshipment.name,
-              //     cost: listshipment.cost,
-              //     estimate: listshipment.estimate,
-              //   })
-              // }
+              onClick={() =>
+                setShipment({
+                  name: listshipment.name,
+                  cost: listshipment.cost,
+                  estimate: listshipment.estimate,
+                })
+              }
             />
           ))}
           {/* <Card />
@@ -105,16 +112,14 @@ const Payment: React.FC = () => {
         <div className="grid">
           {wallets.map((wallet) => (
             <Card key={wallet.id} name={wallet.name} 
-            // onClick={() => setPaymentMethod(wallet.name)} 
-            // onClick={() => alert('/')}
+            onClick={() => setPaymentMethod(wallet.name)}
           />
           ))}
         </div>
       </section>
       <section className="summary">
         <Summary 
-        // button={paymentMethod} 
-        button="tes"
+        button={`Pay With ${paymentMethod}`} 
         onSubmit={onSubmit} />
       </section>
     </PaymentStyled>

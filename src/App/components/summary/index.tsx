@@ -3,7 +3,7 @@ import * as React from "react";
 import ButtonStyled from "../button";
 import FlexStyled from "../flex";
 import HeadingStyled from "../Heading";
-// import { SummaryContext } from "../context/SummaryContext";
+import {SummaryContext} from "../../context/summaryContext";
 import { formatCurrency } from "../../utils/format";
 import styled from "styled-components";
 
@@ -12,13 +12,13 @@ const SummaryStyled = styled.div`
   margin: 0 auto;
   /* height: 100%; */
   display: grid;
-  grid-template-rows: repeat(4, minmax(0, .78fr));
+  /* grid-template-rows: repeat(4, minmax(0, .5fr)); */
   .item-purchased {
     font-size: 16px;
     color: #8d8d8d;
   }
   .grid-item-2 {
-    margin-top: 1rem;
+    /* margin-top: 1rem; */
   }
   .grid-item-4 {
     grid-row-start: 4;
@@ -36,17 +36,17 @@ interface ISummary {
   onSubmit?: () => void;
 }
 const Summary: React.FC<ISummary> = ({ button, onSubmit }) => {
-  // const { cost, feeDropship, total, shipment, paymentMethod } = React.useContext(SummaryContext);
+  const { cost, feeDropship, total, shipment, paymentMethod } = React.useContext(SummaryContext);
   return (
     <SummaryStyled>
       <div className="grid-item-1">
-        <HeadingStyled as="h2" marginY="2.5rem" size="24px">
+        <HeadingStyled as="h2" size="24px">
           Summary
         </HeadingStyled>
         <p className="item-purchased">10 items purchased</p>
       </div>
       <div className="grid-item-2">
-        {/* {shipment.name && (
+        {shipment.name && (
           <>
             <p>Delivery estimation</p>
             <p className="text-green">
@@ -56,7 +56,7 @@ const Summary: React.FC<ISummary> = ({ button, onSubmit }) => {
             </p>
           </>
         )}
-        {paymentMethod && (
+        {/* {paymentMethod && (
           <>
             <p>Payment method</p>
             <p className="text-green">{paymentMethod}</p>
@@ -66,26 +66,26 @@ const Summary: React.FC<ISummary> = ({ button, onSubmit }) => {
       <div className="grid-item-3">
         <FlexStyled marginY="1rem">
           <p>Cost of goods</p>
-          {/* <p>{formatCurrency(cost)}</p> */}
+          <p>{formatCurrency(cost)}</p>
         </FlexStyled>
-        {/* {feeDropship !== 0 && (
+        {feeDropship !== 0 && (
           <FlexStyled marginY="1rem">
             <p>Dropshipping Fee</p>
             <p>{formatCurrency(feeDropship)}</p>
           </FlexStyled>
         )}
-        {shipment && (
+        {shipment.name && (
           <FlexStyled marginY="1rem">
             <p>{shipment.name} shipment</p>
             <p>{formatCurrency(shipment.cost)}</p>
           </FlexStyled>
-        )} */}
+        )}
         <FlexStyled marginY="1rem">
           <HeadingStyled as="h3" size="24px">
             Total
           </HeadingStyled>
           <HeadingStyled as="h3" size="24px">
-            {/* {formatCurrency(total)} */}
+            {formatCurrency(total)}
           </HeadingStyled>
         </FlexStyled>
       </div>

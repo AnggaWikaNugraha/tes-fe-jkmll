@@ -1,7 +1,9 @@
 import React from "react";
 import { IoIosArrowForward } from "react-icons/io";
+import { useDispatch } from "react-redux";
 import { useHistory, Redirect } from "react-router-dom";
 import styled from "styled-components";
+import Type from "../../redux/type";
 
 interface IStep {
   number: number,
@@ -10,14 +12,14 @@ interface IStep {
   setSteps: Function,
   path: string,
   steps: any,
-  setView: any,
 }
 
 interface IStepStyled {
   isActive?: boolean
 }
 
-const Step = ({steps, number, title, isActive, setSteps, path, setView}:IStep) => {
+const Step = ({steps, number, title, isActive, setSteps, path}:IStep) => {
+  const dispatch = useDispatch()
   const acStep = () => {
     const newState = steps.map((res: any) => {
       if (number >= res.number) {
@@ -32,7 +34,11 @@ const Step = ({steps, number, title, isActive, setSteps, path, setView}:IStep) =
       }
     })
     setSteps(newState)
-    setView(number)
+    localStorage.setItem("setSteps", JSON.stringify(newState));
+    dispatch({
+      type: Type.SET_VIEW,
+      view: number,
+    })
   }
   return (
     <StepStyled isActive={isActive}>

@@ -6,33 +6,38 @@ import { PersistGate } from 'redux-persist/integration/react';
 import PrivateApp from "./routers/privateRoute";
 import ROUTERS from "./routers/routes";
 import Redux from './redux/store';
-import LayoutApp from "./modules/layout";
+import FormContext from "./context/formContext";
+import SummaryContext from "./context/summaryContext";
 
 function App() {
   return (
       <Suspense>
-        <Provider store={Redux.store}>
-          <PersistGate loading={null} persistor={Redux.persistor}>
-            <BrowserRouter>
-              <Switch>
-                {ROUTERS.map(({ isPrivate, Component, ...route }, i) => {
-                  if (isPrivate) {
+        <FormContext>
+          <SummaryContext>
+          <Provider store={Redux.store}>
+            <PersistGate loading={null} persistor={Redux.persistor}>
+              <BrowserRouter>
+                <Switch>
+                  {ROUTERS.map(({ isPrivate, Component, ...route }, i) => {
+                    if (isPrivate) {
+                      return (
+                        <PrivateApp key={i} {...route}>
+                          <Component />
+                        </PrivateApp>
+                      );
+                    }
                     return (
-                      <PrivateApp key={i} {...route}>
-                        <Component />
-                      </PrivateApp>
+                      <Route key={i} {...route}>
+                          <Component />
+                      </Route>
                     );
-                  }
-                  return (
-                    <Route key={i} {...route}>
-                      <Component />
-                    </Route>
-                  );
-                })}
-              </Switch>
-            </BrowserRouter>
-          </PersistGate>
-        </Provider>
+                  })}
+                </Switch>
+              </BrowserRouter>
+            </PersistGate>
+          </Provider>
+          </SummaryContext>
+        </FormContext>
       </Suspense>
   );
 }

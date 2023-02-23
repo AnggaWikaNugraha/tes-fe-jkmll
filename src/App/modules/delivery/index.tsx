@@ -1,56 +1,81 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import * as React from "react";
-
 import { SubmitHandler, useForm } from "react-hook-form";
-
-// import Back from "../components/Back";
 import { DeliveryStyled } from "./styles";
-// import { FormContex } from "../context/FormContext";
+import { FormContex } from "../../context/formContext";
 import { IFormInputs } from "./type";
-// import { SummaryContext } from "../context/SummaryContext";
+import { SummaryContext } from "../../context/summaryContext";
 import { useHistory } from "react-router-dom";
 import Back from "../../components/Back";
 import HeadingStyled from "../../components/Heading";
 import Summary from "../../components/summary";
+import { useDispatch } from "react-redux";
+import Type from "../../redux/type";
 
-const Delivery: React.FC = () => {
-  // const {
-  //   isEmail,
-  //   validateEmail,
-  //   isPhone,
-  //   validatePhone,
-  //   isDropshipPhone,
-  //   validateDropshipPhone,
-  //   isDropshipName,
-  //   validateDropshipName,
-  //   isAddress,
-  //   validateAddress,
-  // } = React.useContext(FormContex);
+const Delivery = ({ setSteps, steps}: any) => {
+  const dispatch = useDispatch()
+  const {
+    isEmail,
+    validateEmail,
+    isPhone,
+    validatePhone,
+    isDropshipPhone,
+    validateDropshipPhone,
+    isDropshipName,
+    validateDropshipName,
+    isAddress,
+    validateAddress,
+  } = React.useContext(FormContex);
+  const x = JSON.parse(localStorage.getItem('data') || '{}') ;
+  const y = JSON.parse(localStorage.getItem('setChecked') || '{}') ;
   const {
     register,
     trigger,
     handleSubmit,
     getValues,
     formState: { errors },
-  } = useForm<IFormInputs>();
-  // const { setFeeDropship } = React.useContext(SummaryContext);
-  const [checked, setChecked] = React.useState(false);
+  } = useForm<IFormInputs>(
+    {
+    defaultValues : {
+      email : x.email,
+      phone: x.phone,
+      address: x.address,
+      dropShipperName: x?.dropShipperName,
+      dropshipperphone: x?.dropshipperphone,
+    }
+  }
+  );
+  const { setFeeDropship } = React.useContext(SummaryContext);
+  const [checked, setChecked] = React.useState(y ? y : false);
   const [lengthText, setLengtexh] = React.useState(120);
-  // const history = useHistory();
-  // const addFeeDropship = () => {
-  //   if (checked) setFeeDropship(5900);
-  //   if (!checked) setFeeDropship(0);
-  // };
-  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    console.log(data)
-    // localStorage.setItem("data", JSON.stringify(data));
-    // history.push("/payment");
+  const addFeeDropship = () => {
+    if (checked) setFeeDropship(5900);
+    if (!checked) setFeeDropship(0);
   };
-  // React.useEffect(() => {
-  //   addFeeDropship();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [checked]);
+  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+    localStorage.setItem("data", JSON.stringify(data));
+    const newState = steps.map((res: any) => {
+      if (2 >= res.number) {
+        return {
+          ...res,
+          isActive: true
+        }
+      }
+      return {
+        ...res,
+        isActive: false,
+      }
+    })
+    setSteps(newState)
+    localStorage.setItem("setSteps", JSON.stringify(newState));
+    dispatch({
+      type: Type.SET_VIEW_PAYMENT
+    })
+  };
+  React.useEffect(() => {
+    addFeeDropship();
+  }, [checked]);
   return (
     <DeliveryStyled>
       <section className="delivery">
@@ -60,9 +85,13 @@ const Delivery: React.FC = () => {
             Delivery details
           </HeadingStyled>
           <div className="is-dropship">
-            <input 
-              onChange={() => setChecked(!checked)} 
-            type="checkbox" />
+            <input
+              defaultChecked={y} 
+              onChange={() => {
+                localStorage.setItem('setChecked', JSON.stringify(!checked))
+                setChecked(!checked)
+              }} 
+              type="checkbox" />
             <span>send as dropshipper</span>
           </div>
         </section>
@@ -71,7 +100,7 @@ const Delivery: React.FC = () => {
             <div className="left">
               <section>
                 <div 
-                className={`form-control`}
+                className={`form-control ${isEmail}`}
                 >
                   <label>
                     <input
@@ -85,10 +114,10 @@ const Delivery: React.FC = () => {
                           message: "Invalid email",
                         },
                       })}
-                      // onKeyUp={async () => {
-                      //   const isValid = await trigger("email");
-                      //   validateEmail(isValid);
-                      // }}
+                      onKeyUp={async () => {
+                        const isValid = await trigger("email");
+                        validateEmail(isValid);
+                      }}
                     />
                     <span>Email</span>
                   </label>
@@ -96,7 +125,7 @@ const Delivery: React.FC = () => {
               </section>
               <section>
                 <div 
-                className={`form-control`}
+                className={`form-control ${isPhone}`}
                 >
                   <label>
                     <input
@@ -113,10 +142,10 @@ const Delivery: React.FC = () => {
                           message: "Invalid Phone Number",
                         },
                       })}
-                      // onKeyUp={async () => {
-                      //   const isValid = await trigger("phone");
-                      //   validatePhone(isValid);
-                      // }}
+                      onKeyUp={async () => {
+                        const isValid = await trigger("phone");
+                        validatePhone(isValid);
+                      }}
                     />
                     <span>Phone Number</span>
                   </label>
@@ -124,7 +153,7 @@ const Delivery: React.FC = () => {
               </section>
               <section>
                 <div 
-                className={`form-control`}
+                className={`form-control ${isAddress}`}
                 >
                   <label>
                     <textarea
@@ -142,11 +171,11 @@ const Delivery: React.FC = () => {
                           message: "Invalid Delivery Address",
                         },
                       })}
-                      // onKeyUp={async () => {
-                      //   const isValid = await trigger("address");
-                      //   setLengtexh(120 - getValues("address").length);
-                      //   validateAddress(isValid);
-                      // }}
+                      onKeyUp={async () => {
+                        const isValid = await trigger("address");
+                        setLengtexh(120 - getValues("address").length);
+                        validateAddress(isValid);
+                      }}
                     />
                     <span>Delivery Address</span>
                     <p 
@@ -165,7 +194,7 @@ const Delivery: React.FC = () => {
             <div className="righ">
               <div>
                 <div 
-                className={`form-control`}
+                className={`form-control ${isDropshipName}`}
                 >
                   <label>
                     <input
@@ -177,10 +206,10 @@ const Delivery: React.FC = () => {
                         required: "Dropshipper Name is Required",
                         disabled: !checked,
                       })}
-                      // onKeyUp={async () => {
-                      //   const isValid = await trigger("dropShipperName");
-                      //   validateDropshipName(isValid);
-                      // }}
+                      onKeyUp={async () => {
+                        const isValid = await trigger("dropShipperName");
+                        validateDropshipName(isValid);
+                      }}
                     />
                     <span>Dropshipper Name</span>
                   </label>
@@ -188,7 +217,7 @@ const Delivery: React.FC = () => {
               </div>
               <div>
                 <div 
-                className={`form-control`}
+                className={`form-control ${isDropshipPhone}`}
                 >
                   <label>
                     <input
@@ -203,14 +232,13 @@ const Delivery: React.FC = () => {
                         maxLength: 20,
                         pattern: {
                           value: /^[+0-9]*$/g,
-                          // value: /go*/,
                           message: "Dropshipper Phone Invalid",
                         },
                       })}
-                      // onKeyUp={async () => {
-                      //   const isValid = await trigger("dropshipperphone");
-                      //   validateDropshipPhone(isValid);
-                      // }}
+                      onKeyUp={async () => {
+                        const isValid = await trigger("dropshipperphone");
+                        validateDropshipPhone(isValid);
+                      }}
                     />
                     <span>Phone Number Dropshipper</span>
                   </label>
