@@ -68,6 +68,8 @@ const wallets = [
   },
 ];
 const Payment = ({ setSteps, steps}: any) => {
+  const [cardPilih, setcardPilih] = React.useState(0)
+  const [walletPilih, setwalletPilih] = React.useState(0) 
   const y = JSON.parse(localStorage.getItem('setChecked') || 'false') ;
   const dispatch = useDispatch()
   const { setShipment, setFeeDropship, shipment, paymentMethod, setPaymentMethod } = React.useContext(SummaryContext);
@@ -92,30 +94,42 @@ const Payment = ({ setSteps, steps}: any) => {
           Shipment
         </HeadingStyled>
         <div className="grid">
-          {listshipments.map((listshipment) => (
+          {listshipments.map((listshipment, i) => (
             <Card
+              id={listshipment.id}
+              cardPilih={cardPilih}
+              border={cardPilih === listshipment.id ? '1px solid #1BD97B' : '1px solid #ccc'}
               key={listshipment.id}
               cost={listshipment.cost}
               name={listshipment.name}
-              onClick={() =>
-                setShipment({
-                  name: listshipment.name,
-                  cost: listshipment.cost,
-                  estimate: listshipment.estimate,
-                })
+              onClick={() =>{
+                  setcardPilih(listshipment.id)
+                  setShipment({
+                    name: listshipment.name,
+                    cost: listshipment.cost,
+                    estimate: listshipment.estimate,
+                  })
+                }
               }
             />
           ))}
-          {/* <Card />
-          <Card /> */}
         </div>
         <HeadingStyled as="h1" marginY="1rem" size="36px">
           Payment
         </HeadingStyled>
         <div className="grid">
           {wallets.map((wallet) => (
-            <Card key={wallet.id} name={wallet.name} 
-            onClick={() => setPaymentMethod(wallet.name)}
+            <Card
+              border={walletPilih === wallet.id ? '1px solid #1BD97B' : '1px solid #ccc'}
+              id={wallet.id}
+              cardPilih={walletPilih} 
+              key={wallet.id} 
+              name={wallet.name} 
+              onClick={() => {
+                setwalletPilih(wallet.id)
+                setPaymentMethod(wallet.name)
+              }
+            }
           />
           ))}
         </div>
