@@ -6,33 +6,36 @@ import { PersistGate } from 'redux-persist/integration/react';
 import PrivateApp from "./routers/privateRoute";
 import ROUTERS from "./routers/routes";
 import Redux from './redux/store';
+import LayoutApp from "./modules/layout";
 
 function App() {
   return (
-    <Suspense fallback={<>Loading ..</>}>
-      <Provider store={Redux.store}>
-        <PersistGate loading={null} persistor={Redux.persistor}>
-          <BrowserRouter>
-            <Switch>
-              {ROUTERS.map(({ isPrivate, Component, ...route }, i) => {
-                if (isPrivate) {
+    <LayoutApp>
+      <Suspense>
+        <Provider store={Redux.store}>
+          <PersistGate loading={null} persistor={Redux.persistor}>
+            <BrowserRouter>
+              <Switch>
+                {ROUTERS.map(({ isPrivate, Component, ...route }, i) => {
+                  if (isPrivate) {
+                    return (
+                      <PrivateApp key={i} {...route}>
+                        <Component />
+                      </PrivateApp>
+                    );
+                  }
                   return (
-                    <PrivateApp key={i} {...route}>
+                    <Route key={i} {...route}>
                       <Component />
-                    </PrivateApp>
+                    </Route>
                   );
-                }
-                return (
-                  <Route key={i} {...route}>
-                    <Component />
-                  </Route>
-                );
-              })}
-            </Switch>
-          </BrowserRouter>
-        </PersistGate>
-      </Provider>
-    </Suspense>
+                })}
+              </Switch>
+            </BrowserRouter>
+          </PersistGate>
+        </Provider>
+      </Suspense>
+    </LayoutApp>
   );
 }
 

@@ -1,9 +1,9 @@
 import LayoutApp from "../layout";
 
 function Delivery() {
-  return(<LayoutApp>
+  return(<>
     Delivery
-  </LayoutApp>)
+  </>)
 }
 
 export default Delivery;

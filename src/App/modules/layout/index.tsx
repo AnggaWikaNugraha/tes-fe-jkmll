@@ -34,13 +34,39 @@ const ContainerStyled = styled.div`
   padding-right: 30px;
 `;
 
-function LayoutApp({children}) {
+function LayoutApp({children}: any) {
+
+  const [steps, setSteps] = React.useState([
+    {
+      number: 1,
+      title: 'Delivery',
+      isActive: true,
+      path: '/'
+    },
+    {
+      number: 2,
+      title: 'Payment',
+      isActive: false,
+      path: '/payment'
+    },
+    {
+      number: 3,
+      title: 'Finish',
+      isActive: false,
+      path: '/finsh'
+    }
+  ])
+
+  console.log(steps)
+
   return (
     <LayoutStyled>
        <div className="wrap-step">
-          <Step number={1} title='Delivery'/>
-          <Step number={2} title='Payment'/>
-          <Step number={3} title='Finish'/>
+        {
+          steps.map((res) => <>
+            <Step steps={steps} path={res.path} setSteps={setSteps} isActive={res.isActive} number={res.number} title={res.title}/>
+          </>)
+        }
         </div>
         <ContainerStyled>
           {children}

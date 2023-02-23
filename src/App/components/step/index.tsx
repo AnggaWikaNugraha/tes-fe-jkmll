@@ -1,23 +1,50 @@
 import React from "react";
 import { IoIosArrowForward } from "react-icons/io";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 interface IStep {
   number: number,
-  title: string
+  title: string,
+  isActive: boolean,
+  setSteps: Function,
+  path: string,
+  steps: any,
 }
 
-const Step = ({number, title}:IStep) => {
+interface IStepStyled {
+  isActive?: boolean
+}
+
+const Step = ({steps, number, title, isActive, setSteps, path}:IStep) => {
+  const acStep = () => {
+    const newState = steps.map((res: any) => {
+      console.log(res.number)
+      if (number >= res.number) {
+        return {
+          ...res,
+          isActive: true
+        }
+      }
+      return {
+        ...res,
+        isActive: false,
+      }
+    })
+    setSteps(newState)
+    history.push(path)
+  }
+  const history =  useHistory();
   return (
-    <StepStyled>
-      <p>{number}</p>
+    <StepStyled isActive={isActive}>
+      <p onClick={acStep}>{number}</p>
       <h3>{title}</h3>
       <IoIosArrowForward color="#FF8A00" />
     </StepStyled>
   );
 };
 
-const StepStyled = styled.div`
+const StepStyled = styled.div<IStepStyled>`
   margin: 1rem 0rem;
   display: flex;
   align-items: center;
@@ -26,11 +53,9 @@ const StepStyled = styled.div`
     color: #FF8A00;
     margin-right: 1rem;
   }
-  .active {
-    background-color: #ff8a00;
-  }
   p {
-    background: #f2c490;
+    cursor: pointer;
+    background-color: ${({isActive} : any) => isActive ? '#FF8A00' : '#f2c490'};
     width: 30px;
     height: 30px;
     display: flex;
