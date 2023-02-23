@@ -28,7 +28,7 @@ const Delivery = ({ setSteps, steps}: any) => {
     validateAddress,
   } = React.useContext(FormContex);
   const x = JSON.parse(localStorage.getItem('data') || '{}') ;
-  const y = JSON.parse(localStorage.getItem('setChecked') || '{}') ;
+  const y = JSON.parse(localStorage.getItem('setChecked') || 'false') ;
   const {
     register,
     trigger,
@@ -38,9 +38,9 @@ const Delivery = ({ setSteps, steps}: any) => {
   } = useForm<IFormInputs>(
     {
     defaultValues : {
-      email : x.email,
-      phone: x.phone,
-      address: x.address,
+      email : x?.email,
+      phone: x?.phone,
+      address: x?.address,
       dropShipperName: x?.dropShipperName,
       dropshipperphone: x?.dropshipperphone,
     }

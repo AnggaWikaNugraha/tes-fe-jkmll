@@ -42,8 +42,7 @@ function LayoutApp({children}: any) {
 
   const viewReducer = useSelector((state: any) => state.StatusViewReducer)
   const x = JSON.parse(localStorage.getItem('setSteps') || '[]') ;
-  console.log(x)
-  let y = x ? x : [
+  let y = x.length > 1 ? x :[
     {
       number: 1,
       title: 'Delivery',

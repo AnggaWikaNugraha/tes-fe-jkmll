@@ -9,6 +9,8 @@ import Summary from "../../components/summary";
 import { SummaryContext } from "../../context/summaryContext";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import Type from "../../redux/type";
 
 const PaymentStyled = styled.form`
   .payment {
@@ -66,7 +68,8 @@ const wallets = [
   },
 ];
 const Payment = ({ setSteps, steps}: any) => {
-  const y = JSON.parse(localStorage.getItem('setChecked') || '{}') ;
+  const y = JSON.parse(localStorage.getItem('setChecked') || 'false') ;
+  const dispatch = useDispatch()
   const { setShipment, setFeeDropship, shipment, paymentMethod, setPaymentMethod } = React.useContext(SummaryContext);
   const addFeeDropship = () => {
     if (y) setFeeDropship(5900);
@@ -77,9 +80,9 @@ const Payment = ({ setSteps, steps}: any) => {
   }, [y]);
   const history = useHistory();
   const onSubmit = () => {
-    // if (shipment.cost && paymentMethod !== "Payment") {
-    //   history.push("/finish");
-    // }
+    dispatch({
+      type: Type.SET_VIEW_FINISH
+    })
   };
   return (
     <PaymentStyled>
