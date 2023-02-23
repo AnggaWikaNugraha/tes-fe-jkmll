@@ -10,7 +10,6 @@ import LayoutApp from "./modules/layout";
 
 function App() {
   return (
-    <LayoutApp>
       <Suspense>
         <Provider store={Redux.store}>
           <PersistGate loading={null} persistor={Redux.persistor}>
@@ -35,7 +34,6 @@ function App() {
           </PersistGate>
         </Provider>
       </Suspense>
-    </LayoutApp>
   );
 }
 

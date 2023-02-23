@@ -1,6 +1,6 @@
 import React from "react";
 import { IoIosArrowForward } from "react-icons/io";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import styled from "styled-components";
 
 interface IStep {
@@ -10,16 +10,16 @@ interface IStep {
   setSteps: Function,
   path: string,
   steps: any,
+  setView: any,
 }
 
 interface IStepStyled {
   isActive?: boolean
 }
 
-const Step = ({steps, number, title, isActive, setSteps, path}:IStep) => {
+const Step = ({steps, number, title, isActive, setSteps, path, setView}:IStep) => {
   const acStep = () => {
     const newState = steps.map((res: any) => {
-      console.log(res.number)
       if (number >= res.number) {
         return {
           ...res,
@@ -32,9 +32,8 @@ const Step = ({steps, number, title, isActive, setSteps, path}:IStep) => {
       }
     })
     setSteps(newState)
-    history.push(path)
+    setView(number)
   }
-  const history =  useHistory();
   return (
     <StepStyled isActive={isActive}>
       <p onClick={acStep}>{number}</p>
