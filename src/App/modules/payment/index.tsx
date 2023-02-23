@@ -82,6 +82,20 @@ const Payment = ({ setSteps, steps}: any) => {
   }, [y]);
   const history = useHistory();
   const onSubmit = () => {
+    const newState = steps.map((res: any) => {
+      if (3 >= res.number) {
+        return {
+          ...res,
+          isActive: true
+        }
+      }
+      return {
+        ...res,
+        isActive: false,
+      }
+    })
+    setSteps(newState)
+    localStorage.setItem("setSteps", JSON.stringify(newState));
     dispatch({
       type: Type.SET_VIEW_FINISH
     })
