@@ -4,6 +4,7 @@ import Back from "../../components/Back";
 import HeadingStyled from "../../components/Heading";
 import Summary from "../../components/summary";
 import styled from "styled-components";
+import { RandomString } from "../../utils/alphanumeric";
 
 const FinishStyled = styled.div`
   .finish {
@@ -36,7 +37,7 @@ const Finish = ({ setSteps, steps}: any) => {
         <HeadingStyled as="h2" marginY="1rem" size="36px">
           Thank you
         </HeadingStyled>
-        <p className="order-id">Order ID : XXKYB</p>
+        <p className="order-id">Order ID : {RandomString(5,'23456789ABCDEFGHJKMNPQRSTUVWXYZ')}</p>
         <p>Your order will be delivered today with GO-SEND</p>
         <Back marginY="4rem" />
         </div>
